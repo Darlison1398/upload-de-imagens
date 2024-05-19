@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Imagem</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Editar Imagem</h1>
+        <div class="mt-5">
+            <div id="photo"></div>
+        </div>
+        <form id="editForm" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="imageInput" class="form-label">Escolha uma nova imagem</label>
+                <input type="file" class="form-control" id="imageInput" name="image" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Editar Imagem</button>
+        </form>
+    </div>
+
+    <script>
+        window.onload = function() {
+            var params = new URLSearchParams(window.location.search);
+            var id = params.get('id');
+            var imagem = params.get('imagem');
+
+            var photoDiv = document.getElementById('photo');
+            var imgElement = document.createElement('img');
+            imgElement.src = imagem;
+            imgElement.alt = "Imagem a ser editada";
+            imgElement.style.maxWidth = '300px';
+            imgElement.style.maxHeight = '300px';
+            photoDiv.appendChild(imgElement);
+
+            var editForm = document.getElementById('editForm');
+            editForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                var formData = new FormData(editForm);
+                formData.append('id', id);
+
+                fetch('http://localhost:8282/imagem/editarImagem', {
+                    method: 'PUT',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Imagem editada com sucesso');
+                    window.location.href = './img.html';
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    alert('Erro ao editar a imagem');
+                });
+            });
+        }
+    </script>
+</body>
+</html>
