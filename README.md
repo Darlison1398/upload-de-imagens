@@ -1,0 +1,1 @@
+Parte de uma aplicação front-end onde eu faço o consumo de parte de uma api para fazer upload de imagens. A foi desenvolvida em Spring boot. Ela trabalha em conjunto com essa aplicação para fazer upload de imagens.
